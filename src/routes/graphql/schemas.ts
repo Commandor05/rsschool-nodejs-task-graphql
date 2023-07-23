@@ -37,7 +37,7 @@ const RootQuery = new GraphQLObjectType({
       resolve: memberTypesResolver,
     },
     memberType: {
-      type: new GraphQLNonNull(MemberTypesType),
+      type: MemberTypesType,
       args: {
         id: {
           description: 'MemberTypeId',
@@ -51,7 +51,8 @@ const RootQuery = new GraphQLObjectType({
       resolve: postsResover,
     },
     post: {
-      type: new GraphQLNonNull(PostsType),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      type: PostsType,
       args: {
         id: {
           description: 'Post Id',
@@ -65,7 +66,8 @@ const RootQuery = new GraphQLObjectType({
       resolve: usersResover,
     },
     user: {
-      type: new GraphQLNonNull(UsersType),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      type: UsersType,
       args: {
         id: {
           description: 'User Id',
@@ -79,7 +81,8 @@ const RootQuery = new GraphQLObjectType({
       resolve: profilesResover,
     },
     profile: {
-      type: new GraphQLNonNull(ProfilesType),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      type: ProfilesType,
       args: {
         id: {
           description: 'Profile Id',

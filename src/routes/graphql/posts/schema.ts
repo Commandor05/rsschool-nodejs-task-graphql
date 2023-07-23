@@ -1,5 +1,6 @@
-import { GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { UUIDType } from '../types/uuid.js';
+import { UsersType } from '../users/schema.js';
 
 export const PostsType = new GraphQLObjectType({
   name: 'posts',
@@ -8,5 +9,6 @@ export const PostsType = new GraphQLObjectType({
     id: { type: UUIDType },
     title: { type: GraphQLString },
     content: { type: GraphQLString },
+    author: { type: new GraphQLNonNull(UsersType) },
   }),
 });
