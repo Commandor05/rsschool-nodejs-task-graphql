@@ -1,30 +1,30 @@
 import { PrismaClient } from '@prisma/client';
+import { MemberTypeId } from '../../member-types/schemas.js';
 
-export const profilesResover = async (
+export const memberTypesResolver = async (
   parent,
   args,
   context: { prisma: PrismaClient },
 ) => {
   const { prisma } = context;
-  return prisma.profile.findMany();
+  return prisma.memberType.findMany();
 };
 
-export const profileByIdResover = async (
+export const memberTypeByIdResolver = async (
   parent,
   args: {
-    id: string;
+    id: MemberTypeId;
   },
   context: { prisma: PrismaClient },
 ) => {
   const { prisma } = context;
   const { id } = args;
 
-  const result = await prisma.profile.findUnique({
+  const result = await prisma.memberType.findUnique({
     where: {
       id: id,
     },
   });
-  console.log('id, result: ', id, result);
 
   return result;
 };
