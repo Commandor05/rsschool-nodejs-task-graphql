@@ -61,11 +61,8 @@ export const profileMemberTypeResover = async (
   if (parent && typeof parent === 'object' && parent.hasOwnProperty('memberTypeId')) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const id = parent.memberTypeId as MemberTypeId;
-    const memberType = await prisma.memberType.findUnique({
-      where: {
-        id: id,
-      },
-    });
+    const memberTypes = await prisma.memberType.findMany({});
+    const memberType = memberTypes.find((m) => m.id === id);
 
     return memberType;
   } else {
