@@ -7,6 +7,7 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 import { ProfilesType } from '../profiles/schema.js';
+import { profileMemberTypeResover } from './resolver.js';
 
 export const MemberTypeId = new GraphQLEnumType({
   name: 'MemberTypeId',
@@ -23,6 +24,9 @@ export const MemberTypesType = new GraphQLObjectType({
     id: { type: MemberTypeId },
     discount: { type: GraphQLFloat },
     postsLimitPerMonth: { type: GraphQLInt },
-    profiles: { type: new GraphQLList(new GraphQLNonNull(ProfilesType)) },
+    profiles: {
+      type: new GraphQLList(new GraphQLNonNull(ProfilesType)),
+      resolve: profileMemberTypeResover,
+    },
   }),
 });

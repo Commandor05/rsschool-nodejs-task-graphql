@@ -28,3 +28,21 @@ export const memberTypeByIdResolver = async (
 
   return result;
 };
+
+export const profileMemberTypeResover = async (
+  parent: {
+    id?: string;
+  },
+  args,
+  context: { prisma: PrismaClient },
+) => {
+  const { prisma } = context;
+  const { id } = parent;
+  const profiles = await prisma.profile.findMany({
+    where: {
+      memberTypeId: id,
+    },
+  });
+
+  return profiles;
+};

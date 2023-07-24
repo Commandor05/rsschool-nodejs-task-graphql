@@ -2,6 +2,7 @@ import { GraphQLBoolean, GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'g
 import { UUIDType } from '../types/uuid.js';
 import { UsersType } from '../users/schema.js';
 import { MemberTypesType } from '../member-types/schema.js';
+import { profileMemberTypeResover, profileUserResover } from './resolver.js';
 
 export const ProfilesType = new GraphQLObjectType({
   name: 'profiles',
@@ -10,7 +11,11 @@ export const ProfilesType = new GraphQLObjectType({
     id: { type: UUIDType },
     isMale: { type: GraphQLBoolean },
     yearOfBirth: { type: GraphQLInt },
-    user: { type: new GraphQLNonNull(UsersType) },
-    memberType: { type: new GraphQLNonNull(MemberTypesType) },
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    user: { type: UsersType, resolve: profileUserResover },
+    memberType: {
+      type: MemberTypesType,
+      resolve: profileMemberTypeResover,
+    },
   }),
 });

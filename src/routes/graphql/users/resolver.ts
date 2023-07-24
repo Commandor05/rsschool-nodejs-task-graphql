@@ -2,7 +2,9 @@ import { PrismaClient } from '@prisma/client';
 
 export const usersResover = async (parent, args, context: { prisma: PrismaClient }) => {
   const { prisma } = context;
-  return prisma.user.findMany();
+  const users = await prisma.user.findMany();
+
+  return users;
 };
 
 export const userByIdResover = async (
@@ -15,11 +17,97 @@ export const userByIdResover = async (
   const { prisma } = context;
   const { id } = args;
 
-  const result = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
       id: id,
     },
   });
 
-  return result;
+  if (!user) {
+    return null;
+  }
+
+  return user;
+};
+
+export const subscribedToUserResover = async (
+  parent: {
+    id?: string;
+  },
+  args,
+  context: { prisma: PrismaClient },
+) => {
+  const { prisma } = context;
+  const { id } = parent;
+  const userSubscribedTo = await prisma.user.findMany({
+    where: {
+      userSubscribedTo: {
+        some: {
+          authorId: id,
+        },
+      },
+    },
+  });
+
+  return userSubscribedTo;
+};
+
+export const userSubscribedToResover = async (
+  parent: {
+    id?: string;
+  },
+  args,
+  context: { prisma: PrismaClient },
+) => {
+  const { prisma } = context;
+  const { id } = parent;
+  const subscribedToUser = await prisma.user.findMany({
+    where: {
+      subscribedToUser: {
+        some: {
+          subscriberId: id,
+        },
+      },
+    },
+  });
+
+  return subscribedToUser;
+};
+
+export const userPtofileResover = async (
+  parent: {
+    id?: string;
+  },
+  args,
+  context: { prisma: PrismaClient },
+) => {
+  const { prisma } = context;
+  const { id } = parent;
+  const profile = await prisma.profile.findUnique({
+    where: {
+      userId: id,
+    },
+  });
+
+  const profileRes = profile !== null && profile.id !== null ? profile : null;
+
+  return profileRes;
+};
+
+export const userPostsResover = async (
+  parent: {
+    id?: string;
+  },
+  args,
+  context: { prisma: PrismaClient },
+) => {
+  const { prisma } = context;
+  const { id } = parent;
+  const posts = await prisma.post.findMany({
+    where: {
+      authorId: id,
+    },
+  });
+
+  return posts;
 };
