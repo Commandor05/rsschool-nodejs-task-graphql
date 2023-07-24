@@ -72,3 +72,63 @@ export const profileMemberTypeResover = async (
     return null;
   }
 };
+
+export const createProfileResolver = async (
+  parent,
+  args: {
+    dto: {
+      userId: string;
+      memberTypeId: string;
+      isMale: boolean;
+      yearOfBirth: number;
+    };
+  },
+  context: { prisma: PrismaClient },
+) => {
+  const { prisma } = context;
+  const { dto } = args;
+  return prisma.profile.create({
+    data: dto,
+  });
+};
+
+export const deleteProfileResolver = async (
+  parent,
+  args: {
+    id: string;
+  },
+  context: { prisma: PrismaClient },
+) => {
+  const { prisma } = context;
+  const { id } = args;
+  try {
+    await prisma.profile.delete({
+      where: {
+        id: id,
+      },
+    });
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+export const changeProfileResolver = async (
+  parent,
+  args: {
+    id: string;
+    dto: {
+      memberTypeId?: string;
+      isMale?: boolean;
+      yearOfBirth?: number;
+    };
+  },
+  context: { prisma: PrismaClient },
+) => {
+  const { prisma } = context;
+  const { id, dto } = args;
+  return prisma.profile.update({
+    where: { id: id },
+    data: dto,
+  });
+};

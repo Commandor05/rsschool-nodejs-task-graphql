@@ -1,5 +1,6 @@
 import {
   GraphQLFloat,
+  GraphQLInputObjectType,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
@@ -38,5 +39,23 @@ export const UsersType = new GraphQLObjectType({
       type: new GraphQLList(UsersType),
       resolve: subscribedToUserResover,
     },
+  }),
+});
+
+export const CreateUserInput = new GraphQLInputObjectType({
+  name: 'CreateUserInput',
+  description: 'Create User Dto',
+  fields: () => ({
+    name: { type: GraphQLString },
+    balance: { type: GraphQLFloat },
+  }),
+});
+
+export const ChangeUserInput = new GraphQLInputObjectType({
+  name: 'ChangeUserInput',
+  description: 'Change User Dto',
+  fields: () => ({
+    name: { type: GraphQLString },
+    balance: { type: GraphQLFloat },
   }),
 });

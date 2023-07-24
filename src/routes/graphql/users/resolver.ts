@@ -111,3 +111,110 @@ export const userPostsResover = async (
 
   return posts;
 };
+
+export const createUserResolver = async (
+  parent,
+  args: {
+    dto: {
+      name: string;
+      balance: number;
+    };
+  },
+  context: { prisma: PrismaClient },
+) => {
+  const { prisma } = context;
+  const { dto } = args;
+  return prisma.user.create({
+    data: dto,
+  });
+};
+
+export const deleteUserResolver = async (
+  parent,
+  args: {
+    id: string;
+  },
+  context: { prisma: PrismaClient },
+) => {
+  const { prisma } = context;
+  const { id } = args;
+  try {
+    await prisma.user.delete({
+      where: {
+        id: id,
+      },
+    });
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+export const changeUserResolver = async (
+  parent,
+  args: {
+    id: string;
+    dto: {
+      name: string;
+      balance: number;
+    };
+  },
+  context: { prisma: PrismaClient },
+) => {
+  const { prisma } = context;
+  const { id, dto } = args;
+  return prisma.user.update({
+    where: { id: id },
+    data: dto,
+  });
+};
+
+export const subscribeToResolver = async (
+  parent,
+  args: {
+    userId: string;
+    authorId: string;
+  },
+  context: { prisma: PrismaClient },
+) => {
+  const { prisma } = context;
+  const { userId, authorId } = args;
+  return prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      userSubscribedTo: {
+        create: {
+          authorId: authorId,
+        },
+      },
+    },
+  });
+};
+
+export const unsubscribeFromResolver = async (
+  parent,
+  args: {
+    userId: string;
+    authorId: string;
+  },
+  context: { prisma: PrismaClient },
+) => {
+  const { prisma } = context;
+  const { userId, authorId } = args;
+
+  try {
+    await prisma.subscribersOnAuthors.delete({
+      where: {
+        subscriberId_authorId: {
+          subscriberId: userId,
+          authorId: authorId,
+        },
+      },
+    });
+    return true;
+  } catch (e) {
+    return false;
+  }
+};

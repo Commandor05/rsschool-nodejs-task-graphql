@@ -1,4 +1,10 @@
-import { GraphQLBoolean, GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import {
+  GraphQLBoolean,
+  GraphQLInputObjectType,
+  GraphQLInt,
+  GraphQLObjectType,
+  GraphQLString,
+} from 'graphql';
 import { UUIDType } from '../types/uuid.js';
 import { UsersType } from '../users/schema.js';
 import { MemberTypesType } from '../member-types/schema.js';
@@ -16,6 +22,31 @@ export const ProfilesType = new GraphQLObjectType({
     memberType: {
       type: MemberTypesType,
       resolve: profileMemberTypeResover,
+    },
+  }),
+});
+
+export const ChangeProfileInput = new GraphQLInputObjectType({
+  name: 'ChangeProfileInput',
+  description: 'Change Profile Input',
+  fields: () => ({
+    isMale: { type: GraphQLBoolean },
+    yearOfBirth: { type: GraphQLInt },
+    memberTypeId: {
+      type: GraphQLString,
+    },
+  }),
+});
+
+export const CreateProfileInput = new GraphQLInputObjectType({
+  name: 'CreateProfileInput',
+  description: 'Create Profile Input',
+  fields: () => ({
+    isMale: { type: GraphQLBoolean },
+    yearOfBirth: { type: GraphQLInt },
+    userId: { type: UUIDType },
+    memberTypeId: {
+      type: GraphQLString,
     },
   }),
 });
